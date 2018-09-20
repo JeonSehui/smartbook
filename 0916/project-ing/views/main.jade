@@ -1,0 +1,51 @@
+extends ./layout
+block main
+ html
+  head
+      link(rel='stylesheet', type='text/css', href='/css/button.css')
+      link(rel='stylesheet', type='text/css', href='/css/main.css')
+      link(rel='stylesheet', type='text/css', href='/css/cartButton.css')
+  body
+    #container
+     -if (person)
+        div(style='text-align:right')
+            a(href='/logout')
+                button.btn_logout(type='button', style='margin:10px;') 로그아웃
+            a(href='/mypage')
+                 button.btn_mypage(type='button', style='margin:10px;') MyPage
+     -else
+        div(style='text-align:right')
+            a(href='/login')
+                  button.btn_login(type='button', style='margin:10px;') 로그인
+            a(href='/register_step1')
+                  button.btn_register(type='button', style='margin:10px;') 회원가입
+ p
+    img.main(src='https://s-i.huffpost.com/gen/2710026/images/n-TODDLER-READING-628x314.jpg' ,height:100%,width:100%, object-fit:contain)
+ p
+    a(href='/products_page', target='_blank', title='new image')
+          img(src='https://i.ytimg.com/vi/WC7xwWUfwxA/maxresdefault.jpg', width='200', height='100')
+          img(src='https://img.clipartxtras.com/b1b4943c71421252f2ce4962619cc7ea_family-word-clipart-clipart-panda-free-gclipart-images-word-family-clipart_1200-900.jpg', width='100', height='100')
+
+block content
+        div.content
+            img(src='http://data2.1freewallpapers.com/detail/family-nature-picnic.jpg', width='500', height='500')
+            img(src='http://zoody.ir/tips/wp-content/uploads/2016/06/make-a-new-friend.jpg', width='500', height='500')
+            img(src='https://assets.rbl.ms/14356454/980x.jpg', width='500', height='500')
+            img(src='https://steemitimages.com/DQmbuCqroDYx8nK9rGsKx9Dwdh7qGDL3juqcSBGN96fiGqf/Imagine.png', width='500', height='500')
+            ul
+              - var url = function(str) {
+              -   return '/cart/'+ str;
+              - }
+            each val, index in products
+              img(src='https://misc.ridibooks.com/cover/2234002162/xxlarge', width='300', height='370')
+              h2= products[index].con_name
+              h2= products[index].con_price
+              div.addProduct
+                label.addcart(for='modal')
+                  button.buttonCart(type='button', onclick="location.href='#{url('add/'+index)}';document.getElementById('popUpCart').style.display='block';") 장바구니 담기
+              input#modal.hidden(type='checkbox')
+              div.popUpCart
+                h2 상품이 장바구니에 담겼습니다.
+                label.closebtn(onclick="document.getElementById('popUpCart').style.display='none'") x
+                a(href='main') 계속구매하기
+                a(href='cart') 장바구니 가기

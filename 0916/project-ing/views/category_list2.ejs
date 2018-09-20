@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<link rel="stylesheet" href="D:/전세희/web/views/css/search_bar.css" type="text/css"></link>
+<meta charset="utf-8">
+<head>
+  <script type="text/javascript">
+  var stmnLEFT = 10; // 오른쪽 여백
+  var stmnGAP1 = 0; // 위쪽 여백
+  var stmnGAP2 = 150; // 스크롤시 브라우저 위쪽과 떨어지는 거리
+  var stmnBASE = 150; // 스크롤 시작위치
+  var stmnActivateSpeed = 35; //스크롤을 인식하는 딜레이 (숫자가 클수록 느리게 인식)
+  var stmnScrollSpeed = 20; //스크롤 속도 (클수록 느림)
+  var stmnTimer;
+
+  function RefreshStaticMenu() {
+    var stmnStartPoint, stmnEndPoint;
+    stmnStartPoint = parseInt(document.getElementById('STATICMENU').style.top, 10);
+    stmnEndPoint = Math.max(document.documentElement.scrollTop, document.body.scrollTop) + stmnGAP2;
+    if (stmnEndPoint < stmnGAP1) stmnEndPoint = stmnGAP1;
+    if (stmnStartPoint != stmnEndPoint) {
+      stmnScrollAmount = Math.ceil( Math.abs( stmnEndPoint - stmnStartPoint ) / 15 );
+      document.getElementById('STATICMENU').style.top = parseInt(document.getElementById('STATICMENU').style.top, 10) + ( ( stmnEndPoint<stmnStartPoint ) ? -stmnScrollAmount : stmnScrollAmount ) + 'px';
+      stmnRefreshTimer = stmnScrollSpeed;
+    }
+    stmnTimer = setTimeout("RefreshStaticMenu();", stmnActivateSpeed);
+  }
+  function InitializeStaticMenu() {
+    document.getElementById('STATICMENU').style.right = stmnLEFT + 'px';  //처음에 오른쪽에 위치. left로 바꿔도.
+    document.getElementById('STATICMENU').style.top = document.body.scrollTop + stmnBASE + 'px';
+    RefreshStaticMenu();
+  }
+</script>
+<style type="text/css">
+#STATICMENU { margin: 0pt; padding: 0pt;  position: absolute; right: 0px; top: 0px;}
+</style>
+
+  <style type="text/css">
+  input:-ms-input-placeholder {color:#a8a8a8;}
+  input::-webkit-input-placeholder {color:#a8a8a8;}
+  input::-moz-placeholder {color:#a8a8a8;}
+
+  .recommend{
+    border:2px solid #FAED7D;
+  }
+  #input_bar{
+    font-size: 16px;
+      height: 40px;
+      width: 600px;
+      border: 10px solid #FFE400;
+      background: #ffffff;
+      margin-left: 50px;
+    outline: none;
+  }
+  #button{
+    font-size: 20px;
+    width: 100px;
+    height: 60px;
+    border: 0px;
+    background: #FFE400;
+    outline: none;
+    color: black;
+  }
+  .pagination {
+      display: inline-block;
+  }
+  .pagination a {
+      font-size: 28px;
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background-color .3s;
+      /*border: 1px solid black; /* Gray */
+  }
+  .pagination a.active {
+      background-color: #FFE400;
+      color: black;
+  }
+  .pagination a:hover:not(.active) {background-color: #ddd;}
+  </style>
+</head>
+
+<body onload="InitializeStaticMenu();">
+  <div id="STATICMENU">
+    <div class="recommend">
+      <div class="content">
+      </div>
+      <div class="left">
+        <dic class="menu">
+          <ul>
+            <% for(var i = 0; i< contents.length; i++){%>
+              <p><%=(i+1)%>위   <%=contents[i].con_name%></p>
+              <% }; %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="search_bar" align="center" style="margin-top:45px;">
+        <form action="/search_result" method="get">
+          <input id=input_bar type="text" name="searchWord" placeholder="검색어 입력" required="required">
+          <input id=button type="submit" value="검색"/>
+        </form>
+      </div>
+
+        <%#--------추가-------------%>
+        <div style="margin-top:70px;">
+          <% for(var i = 0; i< content.length; i++){%>
+            <div><img src=
+              <%=content[i].con_imge_filepath%>
+              width="200" align=left vspace=0 hspace=30 style="margin-left:300px;">
+              <p>
+                <%=content[i].con_name%></p>
+              <p style="margin-top:20px;">
+                가격 : <%=content[i].con_price%></p>
+            </div>
+            <div>
+              <button style="margin-top:30px;">바로 구매</button>
+              <button style="margin-top:30px;">장바구니</button>
+              <br clear=left>
+            </div>
+            <% }; %>
+          </div>
+          <%#--------추가-------------%>
+
+          <nav aria-label="Page navigation example" align="center"
+              style="margin-top:30px;">
+            <ul class="pagination">
+              <class="page-item"><a class="page-link" href="#"><<</a>
+              <class="page-item"><a class="page-link" onclick="category_chosen()">1</a>
+              <class="page-item"><a class="active">2</a>
+              <class="page-item"><a class="page-link" href="#">3</a>
+              <class="page-item"><a class="page-link" href="#">>></a>
+            </ul>
+          </nav>
+          <script type="text/javascript">
+              function category_chosen(){
+                location.href = "/category_list";
+              }
+          </script>
+        </body>
+        </html>

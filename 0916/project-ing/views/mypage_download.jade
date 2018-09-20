@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', type='text/css', href='/css/layout.css')
+  header
+    script(type='text/javascript', src='https://code.jquery.com/jquery-1.12.4.min.js')
+    style
+      block styles
+    div.navg
+                if person
+                  nav.gnav
+                    ul
+                      li.main
+  h1 download
+  body
+    div.download
+      ul
+        - var url = function(str) {
+        -   return '/download/'+ str;
+        - }
+      h2 다운로드하다.
+      if cart
+        each val,index in cart
+          h2= products[index].con_name
+          a(href='#{url(index)}') 다운로드

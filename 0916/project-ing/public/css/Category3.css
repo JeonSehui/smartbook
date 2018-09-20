@@ -1,0 +1,48 @@
+
+#STATICMENU { margin: 0pt; padding: 0pt;  position: absolute; right: 0px; top: 0px;}
+
+  input:-ms-input-placeholder {color:#a8a8a8;}
+  input::-webkit-input-placeholder {color:#a8a8a8;}
+  input::-moz-placeholder {color:#a8a8a8;}
+  .recommend{
+    border:2px solid #FAED7D;
+  }
+  #input_bar{
+    font-size: 16px;
+      height: 40px;
+      width: 600px;
+      border: 10px solid #FFE400;
+      background: #ffffff;
+      margin-left: 50px;
+    outline: none;
+  }
+  #button{
+    font-size: 20px;
+    width: 100px;
+    height: 60px;
+    border: 0px;
+    background: #FFE400;
+    outline: none;
+    color: black;
+  }
+     #paging > ul {
+         list-style-type:none;
+         margin-left: 800px;
+ 		}
+     #paging > ul li {
+         font-size: 1.1em;
+         display:inline-block;
+         cursor:pointer;
+         padding: 0 3px;
+ 	 }
+     #paging > ul > li:hover {
+         /*background: #fbfbfb;*/
+         /*font-weight:bold;*/
+         color: #0080ff;
+     }
+     #paging > ul > li.selected {
+         color: #0080ff;
+         font-size:1.2em;
+         font-weight:bold;
+         cursor:default;
+ 		}

@@ -1,0 +1,56 @@
+extends ./layout
+block style
+   style
+     include css/cart.css
+     include css/payprocess.css
+block content
+    div.cart
+      ul.title
+        a(href='/cart') 02 장바구니
+      ul
+        - var url = function(str) {
+        -   return '/cart/'+ str;
+        - }
+      ul
+        div.payprocess
+          li 01 옵션선택
+          li.point 02 장바구니
+          li 03 주문/결제
+          li 04 주문완료
+      ul
+        table.cart
+          thead
+            tr.head
+              th
+                .checkbox
+                  label
+                    input#allCheck(type='checkbox')
+                    | 전체선택
+              th 상품정보
+              th 상품금액
+          tbody
+            if cart
+              each val,index in cart
+                if(parseInt(cart[index])>0)
+                  tr
+                    th
+                      .checkbox
+                        label
+                          input(type='checkbox')
+                          | 선택
+                    td
+                      h2= products[index].con_name
+                      button(type='button', onclick="location.href='#{url('delete/'+index)}'" ) x
+                    td
+                      h2= parseInt(products[index].con_price)
+              tr.totalprice
+                td(colspan="3")
+                  h2 총 상품 가격= #{totalprice} 원
+                  // panel with buttons
+       ul
+      -if (person)
+          button.page_button(type='button', value='계속쇼핑하기', onclick="location.href='/main'") 계속쇼핑하기
+          button.page_button(type='button', value='pay', onclick="location.href='/pay'") PAY
+      -else
+          button.page_button(type='button', value='계속쇼핑하기', onclick="location.href='/main'") 계속쇼핑하기
+          button.page_button(type='button', value='pay', onclick="location.href='/login'") PAY

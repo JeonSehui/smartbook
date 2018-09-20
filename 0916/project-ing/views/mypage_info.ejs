@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>mypage_info</title>
+    <link rel="stylesheet" type="text/css" href="css/register_smallbtn.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/button.css"></link>
+  </head>
+  <body>
+    <div class="container">
+      <div class="register_smallbtn">
+      <h1>회원정보</h1>
+    <article>
+      <form action="/mypage_info" method="get">
+        <p>
+          ID:
+           <input type="text" name="username" value='<%=username %>' readonly>
+        </p>
+        <p>
+          이름:
+          <input type="text" name="name" value='<%=name %>' readonly>
+        </p>
+        <p>
+          E-mail:
+          <input type="email" name="email" value='<%=email %>' readonly>
+        </p>
+        <p>
+          휴대폰 번호:
+          <input type="text" name="phone_num" value='<%=phone_num %>' readonly>
+        </p>
+        <p>
+          아동 연령대:
+          <input type="text" name="child_old" value='<%=child_old %>' readonly>
+        </p>
+        <p>
+            <a href="/mypage"> <button type = "button"  class="btn_cancel1" style="margin:10px;">확인</button></a>
+          <a href="/mypage_modify"> <button type = "button"  class="btn_order" style="margin:10px;">수정</button></a>
+        </p>
+
+      </form>
+    </article>
+
+
+  </body>
+</html>

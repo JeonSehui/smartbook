@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title>MyPage_Button</title>
+  <link rel="stylesheet" type="text/css" href="css/button.css"></link>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.8/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.3/vega-lite.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-rc7/vega-embed.js"></script>
+</head>
+<body>
+    <h1>MyPage_사용횟수 통계</h1>
+    <br></br>
+  <div id="vis"></div>
+  <script type="text/javascript">
+
+    var yourVlSpec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v2.0.json",
+      "description": "A simple bar chart with embedded data.",
+      "data": {
+        "values": [
+          {"시간": "1","횟수": 5}, {"시간": "2","횟수": 4},
+          {"시간": "3","횟수": 3}, {"시간": "4","횟수": 8}, {"시간": "5","횟수": 5},
+          {"시간": "6","횟수": 1}, {"시간": "7","횟수": 7}, {"시간": "8","횟수": 5},
+          {"시간": "9","횟수": 1}, {"시간": "10","횟수": 7}, {"시간": "11","횟수": 13},
+          {"시간": "12","횟수": 30}, {"시간": "13","횟수": 7}, {"시간": "14","횟수": 5},
+          {"시간": "15","횟수": 8}, {"시간": "16","횟수": 15}, {"시간": "17","횟수": 4},
+          {"시간": "18","횟수": 2}, {"시간": "19","횟수": 25}, {"시간": "20","횟수": 20},
+          {"시간": "21","횟수": 2}, {"시간": "22","횟수": 5}, {"시간": "23","횟수": 4}
+        ]
+      },
+      "width": 700,
+      "height": 350,
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "시간", "type": "quantitative"},
+        "y": {"field": "횟수",  "type": "quantitative"},
+        "color": {"field": "button을 누른 횟수", "type": "nominal"}
+      }
+    }
+    vegaEmbed("#vis", yourVlSpec);
+
+  vegaEmbed("#vis", yourVlSpec);
+
+  </script>
+    <a href="/mypage"> <button type = "button"  class="btn_cancel1" style="margin:10px;">확인</button></a>
+</body>
+</html>

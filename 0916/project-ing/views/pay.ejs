@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/pay.css">
+    <link rel="stylesheet" href="/css/layout.css">
+  </head>
+  <body>
+    <div class="pay">
+      <table>
+        <caption>구매자 정보</caption>
+        <tr>
+          <td>이름</td>
+          <td>Database 연동해서 이름 넣기</td>
+        </tr>
+        <tr>
+          <td>휴대폰 번호</td>
+          <td>Database 연동해서 번호 넣기</td>
+        </tr>
+      </table>
+      <table>
+        <caption>결제 정보</caption>
+        <tr>
+          <td> 총 결제금액</td>
+          <td> <%= totalprice %></td>
+        </tr>
+      </table>
+      <label>
+        <input type="checkbox" autofocus="" required=""/>(필수) 구매조건 확인 및 결제대행 서비스 약관 동의
+      </label>
+      <p>위 주문 내용을 확인하였으며, 결제에 동의합니다.<a href="/pay_ing">결제</a></p>
+    </div>
+  </body>
+  <footer>
+    <nav id="gnav">
+      <ul>
+        <li> <a href="/main"> company_info </a></li>
+      </ul>
+    </nav>
+  </footer>
+</html>

@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', type='text/css', href='/css/layout.css')
+  header
+    script(type='text/javascript', src='https://code.jquery.com/jquery-1.12.4.min.js')
+    style
+      block styles
+    div.navg
+                if person
+                  nav.gnav
+                    ul
+                      li.main
+                        a(href='/main') main
+                      li
+                        a(href='/logout') logout
+                else
+                  nav.gnav
+                    ul
+                      li.main
+                        a(href='/main') main
+                      li
+                        a(href='/login') Login
+                      li
+                        a(href='/register_step1') Register
+        block main
+    body
+      block content
+
+    footer
+      nav.gnav
+        ul
+          li
+            a(href='/main') company_info

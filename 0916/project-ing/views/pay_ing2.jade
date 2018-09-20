@@ -1,0 +1,15 @@
+extends ./layout
+block styles
+ html
+  head
+     link(rel='stylesheet', type='text/css', href='/css/payprocess.css')
+ block content
+  div.payprocess
+      li 01 옵션선택
+      li 02 장바구니
+      li.point 03 주문/결제
+      li 04 주문완료
+  div
+      h1 결제가 완료 되었습니다.
+      h2 버튼을 누르시면 결제가 완료됩니다.
+      a(href='/pay_end') 결제 완료

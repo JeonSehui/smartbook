@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>mypage_modify</title>
+    <link rel="stylesheet" type="text/css" href="css/register_smallbtn.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/button.css"></link>
+  </head>
+  <body>
+    <div class="container">
+      <div class="register_smallbtn">
+      <h1>회원정보 수정</h1>
+
+    <article>
+      <form action="/mypage_modify" method="post">
+        <p>
+          [ID: *수정 불가]
+           <input type="text" name="username" value='<%=username %>'readonly>
+        </p>
+        <p>
+          [이름: *수정 불가]
+          <input type="text" name="name" value='<%=name %>' placeholder="name" readonly>
+        </p>
+        <p>
+          E-mail:
+          <input type="email" name="email" value='<%=email %>' placeholder="E-mail">
+        </p>
+        <p>
+          휴대폰 번호:
+          <input type="text" name="phone_num" value='<%=phone_num %>' placeholder="phone_num">
+        </p>
+
+        <p>
+          아동 연령대:
+          <select name="child_old">
+              <option value="3개월이하">3개월이하</option>
+              <option value="4개월">4개월</option>
+              <option value="5개월">5개월</option>
+              <option value="6개월">6개월</option>
+              <option value="7개월">7개월</option>
+              <option value="8개월">8개월</option>
+              <option value="9개월">9개월</option>
+              <option value="10개월">10개월</option>
+              <option value="11개월">11개월</option>
+              <option value="12~24개월">12~24개월</option>
+              <option value="25~36개월">25~36개월</option>
+              <option value="37~48개월">37~48개월</option>
+              <option value="5~7세">5~7세</option>
+              <option value="8~9세">8~9세</option>
+              <option value="10~13세">10~13세</option>
+              <option value="14세이상">14세이상</option>
+            </select>
+          </p>
+        <p>
+            <a href="/mypage"> <button type = "button"  class="btn_cancel1" style="margin:10px;">취소</button></a>
+            <input type="submit" class="btn_submit2" style="margin:10px;" >
+        </p>
+      </form>
+    </article>
+
+
+
+  </body>
+</html>

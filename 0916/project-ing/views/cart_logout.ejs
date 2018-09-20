@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+  <header>
+    <link rel="stylesheet" type="text/css" href="css/layout.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/main.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/cart.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/payprocess.css"></link>
+    <img src="https://s-i.huffpost.com/gen/2710026/images/n-TODDLER-READING-628x314.jpg" class="mainImage">
+  </header>
+  <body>
+    <div class="cart">
+     <ul class="title"><a href="/cart">02 장바구니</a></ul>
+     <ul>
+        <div class="payprocess">
+          <li>01 옵션선택</li>
+          <li class="point">02 장바구니</li>
+          <li>03 주문/결제</li>
+          <li>04 주문완료</li>
+        </div>
+     </ul>
+     <ul>
+       <table class="cart">
+          <thead>
+            <tr class="head">
+              <th>
+                <div class="checkbox">
+                  <label>
+                    <input id="allCheck" type="checkbox"/>전체선택
+                  </label>
+                </div>
+              </th>
+              <th>상품정보</th>
+              <th>상품금액</th>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i< cart.length; i++){%>
+                <tr>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"/>선택
+                    </label>
+                  </div>
+                </tr>
+                <td>
+                  <h2> <%= products[cart.key].con_name%></h2>
+                  /*<button type="button" name="button" onclick="location.href='#{url('delete/'+index)}'"></button>*/
+                </td>
+                <tr class="totalprice">
+                  <td colspan="3">
+                    <h2> 총 상품 가격= <%= totalprice%> 원 </h2>
+                  </td>
+                </tr>
+              <% }; %>
+          </tbody>
+        </table>
+      </ul>
+      <ul>
+      	  <button type="button" name="button" value="계속쇼핑하기" onclick="location.href='/Category1'"></button>
+          <button type="button" name="button" value="PAY" onclick="location.href='/login'"></button>
+      </ul>
+  </body>
+  <footer>
+    <nav id="gnav">
+      <ul>
+        <li> <a href="/main"> company_info </a></li>
+      </ul>
+    </nav>
+  </footer>
+</html>
