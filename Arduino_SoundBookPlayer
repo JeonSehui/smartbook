@@ -1,0 +1,271 @@
+#include <core_build_options.h>
+#include <swRTC.h>
+#include <pcmConfig.h>
+#include <pcmRF.h>
+#include <TMRpcm.h>
+#include <Keypad.h>
+#include <LiquidCrystal_I2C.h>
+#include <SD.h>
+#include <Wire.h>
+
+#define SD_ChipSelectPin 4
+#define ON HIGH
+#define OFF LOW
+TMRpcm tmrpcm; 
+swRTC rtc; //create a new istance of the lib
+const byte rows = 4; //four rows
+const byte cols = 4; //three columns
+byte rowPins[rows] = {7, 6, 5, A2};
+byte colPins[cols] = {3, A3, A1, A0};
+char keys[rows][cols] = {
+  {'1','2','3', 'A'},
+  {'4','5','6', 'B'},
+  {'7','8','9', 'C'},
+  {'*','0','#', 'D'}
+};
+int page, passpage ;
+int arraySize = 0, volumeSize = 5;
+char keyInput[8] = {};
+String playPage, playBook,passnum;
+const int playButton = 2;   //+++
+bool isStopDown = false;
+bool isPlayDown = false;
+String playStatus, stopStatus, readNum ;
+const int stopbutton = 8; //+++
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
+
+void setup(){
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(playButton, INPUT);
+  pinMode(stopbutton, INPUT); //   ++++
+  
+  rtc.stopRTC(); //stop the RTC
+  rtc.setTime(21,42,00); //set the time here
+  rtc.setDate(27,9,2018); //set the date here
+  rtc.startRTC(); //start the RTC
+  
+  digitalWrite(playButton, LOW);
+  digitalWrite(stopbutton, LOW);//A3 @+++
+
+ // attachInterrupt(digitalPinToInterrupt(interruptPin), function, CHANGE);
+ 
+  lcd.init();// initialize the lcd
+  
+  // Print a message to the LCD.
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("book# : ");
+  Serial.begin(9600);
+  if (!SD.begin(SD_ChipSelectPin)) {
+      lcd.clear();
+      lcd.setCursor(1, 0);
+      lcd.print("SD fail");
+      return;
+   }
+
+  tmrpcm.speakerPin = 9;
+  tmrpcm.setVolume(3);
+
+}
+void loop(){
+  char key = keypad.getKey(); // 키패드에서 입력된 값을 가져옵니다.
+  if((key >= '0' && key <= '9') ||(key == '*' || key == '#')||(key =='A'||key=='B')||(key =='C'||key=='D')){
+  // 키패드에서 입력된 값을 조사하여 맞게 입력된 값일 경우(키패드에 있는 버튼이 맞을경우) 비교
+    
+    if(key == 'A'){// *역할(책번호 입력)
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("book# : ");
+      playBook = String (keyInput);
+
+    Serial.print(rtc.getHours(), DEC);
+    Serial.print(":");
+    Serial.print(rtc.getMinutes(), DEC);
+    
+    Serial.print("Timestamp: ");
+    Serial.println(rtc.getTimestamp(), DEC);
+
+    
+      if(arraySize == 5){
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("book# : ");
+        lcd.print(playBook);
+      }
+      else if(arraySize != 5){
+        lcd.clear();
+        lcd.setCursor(2, 0);
+        lcd.print("Please enter");
+        lcd.setCursor(4, 1);
+        lcd.print("5 digits.");        
+      }
+      
+      readNum = playBook.substring (0,5);
+      readNum.concat("_");
+      //lcd.print(playBook);
+      tmrpcm.play("00000_00.wav");
+      tmrpcm.loop(0);
+
+      //변수 초기화
+        for(int i = 0; i<arraySize; i++){
+          keyInput[i] = ' ';
+        }
+        arraySize = 0;
+        playBook = "";
+       
+    }
+    else if(key == 'B'){// #역할(음악 반복 재생)
+      readNum = readNum.substring (0,6);
+      playPage =String (keyInput);
+      playPage = playPage.substring (0,2);
+      readNum.concat(playPage+".wav");
+
+      if(arraySize == 2){      
+        lcd.clear();
+        lcd.setCursor(5, 0);
+        lcd.print(playPage);
+        lcd.print(" page");
+      }
+      else if(arraySize != 2){
+        lcd.clear();
+        lcd.setCursor(2, 0);
+        lcd.print("Please enter");
+        lcd.setCursor(4, 1);
+        lcd.print("2 digits.");        
+      }
+      
+      char* finalread = readNum.c_str();
+      tmrpcm.play(finalread);
+        tmrpcm.loop(1);
+
+      //변수 초기화
+      for(int i = 0; i<arraySize; i++){
+        keyInput[i] = ' ';
+      }
+      arraySize = 0;
+    }
+    else if(key == '*') {//이전 음악 재생
+      passnum= readNum.substring (6,8);
+      page = passnum.toInt();
+      if (page>=11){
+        playPage = "";
+        passpage = page - 1;
+        playPage = String(passpage);
+        }
+      else if (11>page && page >1){
+          playPage = "";
+          passpage = page -1;
+          playPage.concat("0"+String(passpage));
+      }
+      else{
+          playPage = "";
+          passpage = 1;
+          playPage.concat ("0"+String(passpage));
+      }
+
+      readNum = readNum.substring (0,5);
+      readNum.concat("_"+playPage.substring (0));
+      readNum.concat(".wav");
+      lcd.clear();
+      char* finalread = readNum.c_str();
+      tmrpcm.play(finalread);
+      lcd.setCursor(5, 0);
+      lcd.print(playPage);
+      lcd.print(" page");
+      tmrpcm.loop(0);
+    }
+    else if(key == '#') {//다음 음악 재생
+      //max page 설정? 저장되어 있는 값 불러오는 것 얘기.
+      passnum = readNum.substring (6,8);
+      page =passnum.toInt();
+      if (page>8){
+        passpage = page +1;
+        playPage = "";
+        playPage = String(passpage);
+        }
+      else if (8>=page&& page>=1){
+          passpage = page +1;
+          playPage = "";
+          playPage.concat ( "0"+String(passpage));
+      }
+
+      readNum = readNum.substring (0,6);
+      readNum.concat(playPage.substring (0)+".wav");
+      lcd.clear();
+      char* finalread = readNum.c_str();
+       tmrpcm.play(finalread);
+      lcd.setCursor(5, 0);
+      lcd.print(playPage);
+      lcd.print(" page");
+      tmrpcm.loop(0);
+    }
+    //volume 범위 넘어갈 정도로 버튼 누르면 범위값까지만 설정되도록 코드 짜기.
+    else if(key == 'C') {//volume up
+      if(volumeSize<6){
+        tmrpcm.volume(1);
+        volumeSize++;
+      }
+      Serial.println(volumeSize);
+    }
+    else if(key == 'D') {//volume down
+      if(volumeSize>0){
+        tmrpcm.volume(0);
+        volumeSize--;
+      }
+      Serial.println(volumeSize);
+    }
+    else{ //숫자 버튼 눌렀을 때
+      arraySize++;
+      keyInput[arraySize-1] = key;
+    }
+  }
+
+   if(digitalRead(playButton)==ON){
+        isPlayDown = true;
+   }
+      else{
+       if(isPlayDown==true){
+         lcd.clear();
+         tmrpcm.loop(0);
+         if(arraySize==0){//페이지 번호 선택 x 때(1page 재생)(char *)
+            tmrpcm.play((char *)("00001_01.wav"));
+            lcd.setCursor(5, 0);
+            lcd.print("01 page");
+          }
+          else{//입력한 페이지의 음악 재생
+            playPage = String (keyInput);
+            playPage = playPage.substring (0,2);
+            readNum = readNum.substring (0,6);
+            readNum.concat(playPage+".wav");
+             char* finalread = readNum.c_str();
+            tmrpcm.play(finalread);
+            lcd.setCursor(5, 0);
+            lcd.print(playPage);
+            lcd.print(" page");
+
+           //변수 초기화
+            for(int i = 0; i<arraySize; i++){
+                keyInput[i] = ' ';
+            }
+            arraySize = 0;
+         }
+         isPlayDown = false;
+      }
+    }
+
+    if(digitalRead(stopbutton)==ON){//digitalRead(A3) +++
+      isStopDown = true;
+    }
+    else{
+      if(isStopDown==true){
+         tmrpcm.pause();
+         tmrpcm.loop(1);
+         isStopDown = false;
+      }
+    }
+  }
